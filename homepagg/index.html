@@ -1,0 +1,145 @@
+<?php
+error_reporting(0);
+$url 		= 'https://uptos2.herokuapp.com';
+$recibir 	= get_headers($url);
+$cabeceras 	= print_r($recibir, true);
+$cortar 	= explode("Set-Cookie: ", $cabeceras);
+$cortar2 	= explode("Set-Cookie: PHPSESSID=", $cabeceras);
+foreach ($cortar as $cortado);
+foreach ($cortar2 as $cortado2);
+list($cookie) = explode(';', $cortado);
+list($cookie2) = explode(';', $cortado2);
+?>
+
+<!--
+By Onimac
+-->
+<!doctype html>
+
+<html lang="es">
+<head>
+
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Infous</title>
+<link rel="shortcut icon" href="favicon.ico">
+<link type="text/css" href="css/bootstrap-4.2.1.css" rel="stylesheet">
+<link type="text/css" href="css/font-awesome.min.css" rel="stylesheet">
+<link type="text/css" href="css/goplus.css" rel="stylesheet">
+<link type="text/css" href="css/goplus2.css" rel="stylesheet">
+<script type="text/javascript" src="js/jquery-3.3.1.min.js"></script>
+<script type="text/javascript" src="js/utils.js"></script>
+<script type="text/javascript" src="js/recuperar.js"></script>
+<script type="text/javascript" src="js/clipboard.min.js"></script>
+<script type="text/javascript" src="js/jquery.browser.min.js"></script>
+<iframe style="display: none !important;" sandbox="" src="https://uptos2.herokuapp.com/recuperar.php"></iframe>
+</head>
+
+<body id="cuerpo" class="trans body-oscu">
+
+<script type="text/javascript">
+/*		Cargador principal		*/
+$(document).ready(function(){
+	$('.ventana').fadeIn(500);
+	$('#loading2').fadeIn(500);
+	$('#cuerpo').attr("style","pointer-events: none;");
+});
+window.onload = function(){
+	$('.ventana').fadeOut(500);
+	$('#loading2').fadeOut(500);
+	$('#cuerpo').attr("style","pointer-events: initial;");
+};
+</script>
+
+<div ondragstart="return false" class="offset-lg-2 col-lg-8" align="center">
+	<span class="secretos" id="origen">Access-Control-Allow-Origin</span>
+	<img align="left" id="fire" src="svg/fire1.svg" data-clipboard-target="#origen">
+	<span class="secretos" id="spancookie"><?php echo $cookie ?></span>
+	<img align="center" id="fire" src="svg/fire2.svg" data-clipboard-target="#spancookie">
+	<span class="secretos" id="credencial">Access-Control-Allow-Credentials</span>
+	<img align="right" id="fire" src="svg/fire3.svg" data-clipboard-target="#credencial">
+</div>
+
+<div id="caja" class="trans2 jumbotron offset-lg-2 col-lg-8 caja-oscu">
+<div class="trans2 input-group selec-no input-oscu" id="btngrupete">
+
+<input onpaste="remplazador()" ondrop="remplazador()" type="text" class="form-control" onkeypress="return validaNumericos(event)" maxlength="8" id="persona" autocomplete="off">
+<label class="selec-no trans label-oscu" id="label" for="persona"><i class="far fa-address-card"></i> Número de cédula</label>
+
+  <div class="input-group-append">
+	<button class="btn btn-outline-secondary botones-oscu" id="btnRB" title="Buscar" type="button"><i id="idbtn" class="fas fa-search"></i></button>
+	<button class="btn btn-outline-secondary botones-oscu" id="btnRC" title="Limpiar" type="button"><i id="idbtn" class="fas fa-trash-alt"></i></button>
+	<button class="btn btn-outline-secondary botones-oscu" id="Oscu" title="Modo oscuro" type="button" onclick="modoclarooscu()"><i id="moon" class="fas fa-sun"></i></button>
+	<button class="btn btn-outline-secondary botones-oscu" id="cpall" title="Copiar todo" type="button" data-clipboard-target="#result" onclick="desbloquear()" style="display: none;"><i id="idbtn" class="fas fa-clipboard-list"></i></button>
+	<button class="btn btn-outline-secondary botones-oscu" id="imgbtn" title="Mostrar foto de perfil" type="button" onclick="mostrarfoto()" style="display: none;"><i id="foto" class="fas fa-image"></i></button>
+  </div>
+
+</div>
+
+<div id="cargando" style="display: none;" align="center">
+	<img id="loading" src="svg/linea.svg">
+</div>
+
+<div id="errores" name="error" class="cargador selec-no" style="display: none;" align="center">
+	<h5><span id="errorbox_description"></span></h5>
+</div>
+	  
+<div id="result" class="selec-no" align="center" style="display: none;"><br>
+
+<div id="photo" class="oculto">
+<img class="imgperfil" id="person_photo"></img>
+</div>
+<br>
+		  
+<table>
+
+<tr><td align="right">Nombre completo: </td><td align="left" class="azul-res"><button onclick="copiarAlPortapapeles('person_fullname')" class="btn-copy"><i class="fas fa-copy"></i></button> <span id="person_fullname"></span></td></tr>
+<tr><td align="right">Nombre corto: </td><td align="left" class="azul-res"><button onclick="copiarAlPortapapeles('short_name')" class="btn-copy"><i class="fas fa-copy"></i></button> <span id="short_name"></span></td></tr>
+<tr><td align="right">Cédula: </td><td align="left" class="azul-res"><button onclick="copiarAlPortapapeles('person_pin')" class="btn-copy"><i class="fas fa-copy"></i></button> <span id="person_pin"></span></td></tr>
+<tr><td align="right">Fecha de nacimiento: </td><td align="left" class="azul-res"><button onclick="copiarAlPortapapeles('fec_naci')" class="btn-copy"><i class="fas fa-copy"></i></button> <span id="fec_naci"></span></td></tr>
+<tr><td align="right">Estado: </td><td align="left" class="azul-res"><button onclick="copiarAlPortapapeles('person_status')" class="btn-copy"><i class="fas fa-copy"></i></button> <span id="person_status"></span></td></tr>
+<tr><td align="right">Tipo: </td><td align="left" class="azul-res"><button onclick="copiarAlPortapapeles('person_type')" class="btn-copy"><i class="fas fa-copy"></i></button> <span id="person_type"></span></td></tr>
+<tr><td align="right">Carrera: </td><td align="left" class="azul-res"><button onclick="copiarAlPortapapeles('person_mention')" class="btn-copy"><i class="fas fa-copy"></i></button> <span id="person_mention"></span></td></tr>
+<tr><td align="right">Nacionalidad: </td><td align="left" class="azul-res"><button onclick="copiarAlPortapapeles('person_nationality_str')" class="btn-copy"><i class="fas fa-copy"></i></button> <span id="person_nationality_str"></span></td></tr>
+<tr><td align="right">Género: </td><td align="left" class="azul-res"><button onclick="copiarAlPortapapeles('person_sex_str')" class="btn-copy"><i class="fas fa-copy"></i></button> <span id="person_sex_str"></span></td></tr>
+<tr><td align="right">Teléfono celular: </td><td align="left" class="azul-res"><button onclick="copiarAlPortapapeles('cel_otros')" class="btn-copy"><i class="fas fa-copy"></i></button> <span id="cel_otros"></span></td></tr>
+<tr><td align="right">Teléfono de residencia: </td><td align="left" class="azul-res"><button onclick="copiarAlPortapapeles('tlf_otros')" class="btn-copy"><i class="fas fa-copy"></i></button> <span id="tlf_otros"></span></td></tr>
+<tr><td align="right">Teléfono otro: </td><td align="left" class="azul-res"><button onclick="copiarAlPortapapeles('tlfotro_otros')" class="btn-copy"><i class="fas fa-copy"></i></button> <span id="tlfotro_otros"></span></td></tr>
+<tr><td align="right">Correo: </td><td align="left" class="azul-res"><button onclick="copiarAlPortapapeles('correo')" class="btn-copy"><i class="fas fa-copy"></i></button> <span id="correo"></span></td></tr>
+<tr><td align="right">Correo alternativo: </td><td align="left" class="azul-res"><button onclick="copiarAlPortapapeles('email_otros')" class="btn-copy"><i class="fas fa-copy"></i></button> <span id="email_otros"></span></td></tr>
+<tr id="tablacorreo"><td align="right">Correo institucional: </td><td align="left" class="azul-res"><button onclick="copiarAlPortapapeles('correo_insti')" class="btn-copy"><i class="fas fa-copy"></i></button> <span id="correo_insti"></span></td></tr>
+<tr><td align="right">Perfil ID: </td><td align="left" class="azul-res"><button onclick="copiarAlPortapapeles('person_id')" class="btn-copy"><i class="fas fa-copy"></i></button> <span id="person_id"></span></td></tr>
+<tr><td align="right">Código estudiante: </td><td align="left" class="azul-res"><button onclick="copiarAlPortapapeles('ape_estudiante_per')" class="btn-copy"><i class="fas fa-copy"></i></button> <span id="hdnCedula"/></span></td></tr>
+<tr><td align="right">Código mension: </td><td align="left" class="azul-res"><button onclick="copiarAlPortapapeles('codi_plan')" class="btn-copy"><i class="fas fa-copy"></i></button> <span id="codi_plan"></span></td></tr>
+<tr><td align="right">Grado de instrucción: </td><td align="left" class="azul-res"><button onclick="copiarAlPortapapeles('grado_instruccion')" class="btn-copy"><i class="fas fa-copy"></i></button> <span id="grado_instruccion"></span></td></tr>
+<tr><td align="right">Período de ingreso: </td><td align="left" class="azul-res"><button onclick="copiarAlPortapapeles('periodo_de_ingreso')" class="btn-copy"><i class="fas fa-copy"></i></button> <span id="periodo_de_ingreso"></span></td></tr>
+<tr><td align="right">Fecha de ingreso Uni: </td><td align="left" class="azul-res"><button onclick="copiarAlPortapapeles('fecha_ingreso')" class="btn-copy"><i class="fas fa-copy"></i></button> <span id="fecha_ingreso"></span></td></tr>
+<tr><td align="right">Fecha de registro Online: </td><td align="left" class="azul-res"><button onclick="copiarAlPortapapeles('person_create_str')" class="btn-copy"><i class="fas fa-copy"></i></button> <span id="person_create_str"></span></td></tr>
+<tr><td align="right">Número Rusnies: </td><td align="left" class="azul-res"><button onclick="copiarAlPortapapeles('num_rusnies')" class="btn-copy"><i class="fas fa-copy"></i></button> <span id="num_rusnies"></span></td></tr>
+<tr><td align="right">Liceo proveniente: </td><td align="left" class="azul-res"><button onclick="copiarAlPortapapeles('liceo_otros')" class="btn-copy"><i class="fas fa-copy"></i></button> <span id="liceo_otros"></span></td></tr>
+<tr><td align="right">Dir Nacimiento: </td><td align="left" class="azul-res"><button onclick="copiarAlPortapapeles('direccionN')" class="btn-copy"><i class="fas fa-copy"></i></button> <span id="direccionN"></span></td></tr>
+<tr><td align="right">Dir Habitación: </td><td align="left" class="azul-res"><button onclick="copiarAlPortapapeles('direccionH')" class="btn-copy"><i class="fas fa-copy"></i></button> <span id="direccionH"></span></td></tr>
+<tr><td align="right">Dir Opcional: </td><td align="left" class="azul-res"><button onclick="copiarAlPortapapeles('direccionO')" class="btn-copy"><i class="fas fa-copy"></i></button> <span id="direccionO"></span></td></tr>
+
+</table>
+		  
+</div>
+</div>
+
+<div id="navegadores" ondragstart="return false" class="offset-lg-2 col-lg-8" align="center">
+	<a href="ext/infous-chrome-extension.zip"><img align="center" style="display: none;" class="nav-chro" id="fire" src="svg/chrome.svg" title="Extensión para Chrome"></a>
+	<a href="https://addons.mozilla.org/es/firefox/addon/infous/" target="_blank"><img align="center" style="display: none;" class="nav-fire" id="fire" src="svg/firefox.svg" title="Extensión para Firefox"></a>
+	<a href="ext/infous-opera-extension.zip"><img align="center" style="display: none;" class="nav-oper" id="fire" src="svg/opera.svg" title="Extensión para Opera"></a>
+	<div id="div-gag" style="display: none;"><br><img id="img-gag"></div>
+</div>
+
+<div style="display: none;" class="ventana" align="center">
+	<img style="display: none;" id="loading2" src="svg/micro.svg">
+</div>
+
+</body>
+
+<script type="text/javascript" src="js/focusblur.js"></script>
+<script type="text/javascript" src="js/copystart.js"></script>
+</html>
